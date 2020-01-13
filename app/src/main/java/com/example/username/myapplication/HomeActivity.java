@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +62,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private List<Libro> getLibros() {
-        return LibroManager.getInstance().getLibros();
+        try {
+            return LibroManager.getInstance(this).getLibros();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
     private void saludarUsuario() {

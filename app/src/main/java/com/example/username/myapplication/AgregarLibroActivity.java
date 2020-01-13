@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.sql.SQLException;
+
 public class AgregarLibroActivity extends AppCompatActivity {
 
     private EditText etNombreLibro;
@@ -26,8 +28,13 @@ public class AgregarLibroActivity extends AppCompatActivity {
                     Libro libro = new Libro();
                     libro.setNombre(etNombreLibro.getText().toString());
                     libro.setAutor(etAutor.getText().toString());
-                    LibroManager.getInstance().agregarLibro(libro);
-                    finish();
+                    try {
+                        LibroManager.getInstance(AgregarLibroActivity.this).agregarLibro(libro);
+                        finish();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        Toast.makeText(AgregarLibroActivity.this, "No se pudo agregar el libro", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(AgregarLibroActivity.this, "Completar todos los campos", Toast.LENGTH_SHORT).show();
                 }
