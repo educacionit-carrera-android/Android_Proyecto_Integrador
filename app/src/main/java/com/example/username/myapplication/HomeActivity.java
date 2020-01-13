@@ -1,6 +1,7 @@
 package com.example.username.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +28,10 @@ public class HomeActivity extends AppCompatActivity {
         saludarUsuario();
         setupToolbar();
         setupAdapter();
+
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        prefs.getString("Nombre", "");
+        prefs.getInt("Edad", 0);
     }
 
     private void setupToolbar() {
