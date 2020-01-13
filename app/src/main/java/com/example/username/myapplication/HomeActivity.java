@@ -1,7 +1,11 @@
 package com.example.username.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -12,13 +16,21 @@ public class HomeActivity extends AppCompatActivity {
 
     private ListView lvLibros;
     private LibrosAdapter adapter;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         saludarUsuario();
+        setupToolbar();
         setupAdapter();
+    }
+
+    private void setupToolbar() {
+        toolbar = findViewById(R.id.homeToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Mis libros");
     }
 
     private void setupAdapter() {
@@ -42,5 +54,20 @@ public class HomeActivity extends AppCompatActivity {
             String usuario = bundle.getString("USUARIO");
             Toast.makeText(HomeActivity.this, "Bienvenido " + usuario, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.item_agregar) {
+            Intent intent = new Intent(HomeActivity.this, AgregarLibroActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
