@@ -48,13 +48,15 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.setLibros(getLibros());
+        adapter.notifyDataSetChanged();
+    }
+
     private List<Libro> getLibros() {
-        List<Libro> libros = new ArrayList<>();
-        libros.add(new Libro(1, "Canción de hielo y fuego", "George R. R. Martin"));
-        libros.add(new Libro(2, "Harry Potter y el cáliz de fuego", "J. K. Rowling"));
-        libros.add(new Libro(3, "Los juegos del hambre en llamas", "Suzanne Collins"));
-        libros.add(new Libro(4, "Maze runner", "James Dashner"));
-        return libros;
+        return LibroManager.getInstance().getLibros();
     }
 
     private void saludarUsuario() {

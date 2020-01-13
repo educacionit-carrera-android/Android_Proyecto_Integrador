@@ -36,7 +36,7 @@ public class LibrosAdapter extends BaseAdapter {
         //Asignamos al convertView a un objeto del tipo vista para ver si es nulo. Si no lo es,
         //quiere decir que ya existía una vista, por lo que en vez de inflarla, la reutilizaremos.
         View view = convertView;
-        if (view == null){
+        if (view == null) {
             view = LayoutInflater
                     .from(parent.getContext())
                     .inflate(R.layout.item_libro, parent, false);
@@ -52,5 +52,9 @@ public class LibrosAdapter extends BaseAdapter {
         txtAutor.setText(libro.getAutor());
 
         return view;
+    }
+
+    public void setLibros(List<Libro> libros) {
+        this.libros = libros;
     }
 }

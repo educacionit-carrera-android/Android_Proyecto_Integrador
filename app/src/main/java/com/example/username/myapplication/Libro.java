@@ -6,6 +6,9 @@ public class Libro {
     private String nombre;
     private String autor;
 
+    public Libro() {
+    }
+
     public Libro(Integer id, String nombre, String autor) {
         this.id = id;
         this.nombre = nombre;
