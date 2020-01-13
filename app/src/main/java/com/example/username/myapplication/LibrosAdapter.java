@@ -33,10 +33,14 @@ public class LibrosAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        //Asignamos al objeto View la vista que inflamos
-        View view = LayoutInflater
-                .from(parent.getContext())
-                .inflate(R.layout.item_libro, parent, false);
+        //Asignamos al convertView a un objeto del tipo vista para ver si es nulo. Si no lo es,
+        //quiere decir que ya existía una vista, por lo que en vez de inflarla, la reutilizaremos.
+        View view = convertView;
+        if (view == null){
+            view = LayoutInflater
+                    .from(parent.getContext())
+                    .inflate(R.layout.item_libro, parent, false);
+        }
         //Obtenemos el libro a partir de la posición que nos viene
         Libro libro = libros.get(position);
 

@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -37,6 +39,13 @@ public class HomeActivity extends AppCompatActivity {
         lvLibros = findViewById(R.id.lvLibros);
         adapter = new LibrosAdapter(getLibros());
         lvLibros.setAdapter(adapter);
+        lvLibros.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Libro libro = adapter.getItem(position);
+                Toast.makeText(HomeActivity.this, libro.getNombre(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private List<Libro> getLibros() {
