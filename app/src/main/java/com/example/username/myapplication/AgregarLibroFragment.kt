@@ -1,5 +1,6 @@
 package com.example.username.myapplication
 
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -37,14 +38,7 @@ class AgregarLibroFragment : Fragment() {
                 val libro = Libro()
                 libro.nombre = etNombreLibro.text.toString()
                 libro.autor = etAutor.text.toString()
-                try {
-                    LibroManager.getInstance(context).agregarLibro(libro)
-                    activity?.finish()
-                } catch (e: SQLException) {
-                    e.printStackTrace()
-                    Toast.makeText(context, "No se pudo agregar el libro", Toast.LENGTH_SHORT).show()
-                }
-
+                AgregarLibroAsyncTask(this).execute(libro)
             } else {
                 Toast.makeText(context, "Completar todos los campos", Toast.LENGTH_SHORT).show()
             }
@@ -57,6 +51,37 @@ class AgregarLibroFragment : Fragment() {
             datosValidos = false
         }
         return datosValidos
+    }
+
+    fun closeActivity() {
+        activity?.finish()
+    }
+
+    class AgregarLibroAsyncTask(private var agregarLibroFragment: AgregarLibroFragment)
+        : AsyncTask<Libro, Unit, Boolean>() {
+
+        override fun doInBackground(vararg params: Libro?): Boolean {
+            var libroAgregado = false
+            try {
+                LibroManager.getInstance(agregarLibroFragment.activity?.applicationContext)
+                        .agregarLibro(params[0])
+                libroAgregado = true
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            }
+
+            return libroAgregado
+        }
+
+        override fun onPostExecute(libroAgregado: Boolean) {
+            super.onPostExecute(libroAgregado)
+            if (libroAgregado) {
+                agregarLibroFragment.closeActivity()
+            } else {
+                Toast.makeText(agregarLibroFragment.activity?.applicationContext,
+                        "No se pudo agregar el libro", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 }
