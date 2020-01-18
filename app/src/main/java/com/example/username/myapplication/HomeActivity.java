@@ -3,14 +3,22 @@ package com.example.username.myapplication;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -33,6 +41,9 @@ public class HomeActivity extends AppCompatActivity {
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         prefs.getString("Nombre", "");
         prefs.getInt("Edad", 0);
+
+        logFCMToken();
+        subscribeToTopic("Terror");
     }
 
     private void setupToolbar() {
@@ -91,5 +102,39 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void subscribeToTopic(final String topic) {
+        FirebaseMessaging.getInstance().subscribeToTopic(topic)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("FirebaseMessaging",
+                                    "Se suscribió al tema " + topic);
+                        } else {
+                            Log.d("FirebaseMessaging",
+                                    "No se pudo suscribir al tema " + topic);
+                        }
+                    }
+                });
+    }
+
+    private void logFCMToken() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("Firebase", "Fallo al obtener el token", task.getException());
+                            return;
+                        }
+                        Log.d("Firebase", "Token: " + task.getResult().getToken());
+                    }
+                });
+    }
+
+    private void unSubcribeFromTopicTopic(String topic) {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
     }
 }
