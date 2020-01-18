@@ -1,8 +1,13 @@
 package com.example.username.myapplication
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context.NOTIFICATION_SERVICE
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.NotificationCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +18,7 @@ import java.sql.SQLException
 
 class AgregarLibroFragment : Fragment() {
 
+    private val CHANNEL_ID: String = "1"
     private lateinit var etNombreLibro: EditText
     private lateinit var etAutor: EditText
     private lateinit var btnGuardar: Button
@@ -24,7 +30,6 @@ class AgregarLibroFragment : Fragment() {
 
         return view
     }
-
 
     private fun setupUI(view: View) {
         etNombreLibro = view.findViewById(R.id.etNombreLibro)
@@ -76,11 +81,33 @@ class AgregarLibroFragment : Fragment() {
         override fun onPostExecute(libroAgregado: Boolean) {
             super.onPostExecute(libroAgregado)
             if (libroAgregado) {
+                agregarLibroFragment.mostrarNotification()
                 agregarLibroFragment.closeActivity()
             } else {
                 Toast.makeText(agregarLibroFragment.activity?.applicationContext,
                         "No se pudo agregar el libro", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun mostrarNotification() {
+        val notification = NotificationCompat.Builder(context!!, CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentTitle("Libros")
+                .setContentText("Se agregó un libro a la colección")
+                .build()
+
+        val notificationManager = context!!.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        crearCanal(notificationManager)
+        notificationManager.notify(1, notification)
+    }
+
+    private fun crearCanal(notificationManager: NotificationManager) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(CHANNEL_ID,
+                    "Nuevo libro",
+                    NotificationManager.IMPORTANCE_DEFAULT)
+            notificationManager.createNotificationChannel(channel)
         }
     }
 
