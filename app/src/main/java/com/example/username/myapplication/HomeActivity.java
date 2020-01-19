@@ -42,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         prefs.getString("Nombre", "");
         prefs.getInt("Edad", 0);
 
+        initializeSyncService();
         logFCMToken();
         subscribeToTopic("Terror");
     }
@@ -63,6 +64,11 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(HomeActivity.this, libro.getNombre(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void initializeSyncService() {
+        Intent intent = new Intent(this, SyncService.class);
+        startService(intent);
     }
 
     @Override
@@ -102,6 +108,12 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopService(new Intent(this, SyncService.class));
+        super.onDestroy();
     }
 
     private void subscribeToTopic(final String topic) {

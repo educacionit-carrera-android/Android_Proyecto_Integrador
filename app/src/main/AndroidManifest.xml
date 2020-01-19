@@ -21,6 +21,10 @@
         <activity android:name=".AgregarLibroActivity"></activity>
 
         <service
+            android:name=".SyncService"
+            android:exported="false" />
+
+        <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
