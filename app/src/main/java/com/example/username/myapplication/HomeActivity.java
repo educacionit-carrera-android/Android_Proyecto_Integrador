@@ -1,6 +1,7 @@
 package com.example.username.myapplication;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,8 +25,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Intent.ACTION_AIRPLANE_MODE_CHANGED;
+
 public class HomeActivity extends AppCompatActivity {
 
+    private AirplaneStateReceiver airplaneStateReceiver = new AirplaneStateReceiver();
     private ListView lvLibros;
     private LibrosAdapter adapter;
     private Toolbar toolbar;
@@ -76,6 +80,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onResume();
         adapter.setLibros(getLibros());
         adapter.notifyDataSetChanged();
+
+        registerReceiver(airplaneStateReceiver, new IntentFilter(ACTION_AIRPLANE_MODE_CHANGED));
     }
 
     private List<Libro> getLibros() {
@@ -113,6 +119,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         stopService(new Intent(this, SyncService.class));
+        unregisterReceiver(airplaneStateReceiver);
         super.onDestroy();
     }
 
