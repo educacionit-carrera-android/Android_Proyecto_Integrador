@@ -6,18 +6,10 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.os.IBinder
 import android.util.Log
-import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledExecutorService
-import java.util.concurrent.TimeUnit
 
 class SyncService : Service() {
-
-    lateinit var executor: ScheduledExecutorService
-    val executeSync = Runnable { SyncData(applicationContext).execute() }
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        executor = Executors.newScheduledThreadPool(1)
-        executor.schedule(executeSync, 1L, TimeUnit.MINUTES)
+        SyncData(applicationContext).execute()
 
         return START_NOT_STICKY
     }
@@ -33,6 +25,11 @@ class SyncService : Service() {
             sendDataToServer(libros)
         }
 
+        override fun onPostExecute(result: Unit?) {
+            super.onPostExecute(result)
+            Intent(context, SyncService::class.java).apply { context.stopService(this) }
+        }
+
     }
 
     companion object {
@@ -42,7 +39,6 @@ class SyncService : Service() {
     }
 
     override fun onDestroy() {
-        executor.shutdown()
         Log.i("SyncService", "Servicio detenido")
         super.onDestroy()
     }

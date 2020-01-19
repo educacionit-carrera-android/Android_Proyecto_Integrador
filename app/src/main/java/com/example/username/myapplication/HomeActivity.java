@@ -1,5 +1,7 @@
 package com.example.username.myapplication;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -23,8 +25,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import static android.app.PendingIntent.FLAG_NO_CREATE;
 import static android.content.Intent.ACTION_AIRPLANE_MODE_CHANGED;
 
 public class HomeActivity extends AppCompatActivity {
@@ -49,6 +53,8 @@ public class HomeActivity extends AppCompatActivity {
         initializeSyncService();
         logFCMToken();
         subscribeToTopic("Terror");
+
+        createSyncAlarm();
     }
 
     private void setupToolbar() {
@@ -155,5 +161,21 @@ public class HomeActivity extends AppCompatActivity {
 
     private void unSubcribeFromTopicTopic(String topic) {
         FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
+    }
+
+    private void createSyncAlarm() {
+        Intent intent = new Intent(this, SyncDataReceiver.class);
+        boolean alarmExists = PendingIntent.getBroadcast(this, 0, intent, FLAG_NO_CREATE) != null;
+
+        if (!alarmExists) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.set(Calendar.HOUR_OF_DAY, 8);
+            calendar.set(Calendar.MINUTE, 0);
+
+            alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 86400000, pendingIntent);
+        }
     }
 }
