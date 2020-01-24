@@ -118,6 +118,9 @@ public class HomeActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.item_agregar) {
             Intent intent = new Intent(HomeActivity.this, AgregarLibroActivity.class);
             startActivity(intent);
+        } else if (item.getItemId() == R.id.item_mapa) {
+            Intent intent = new Intent(HomeActivity.this, MapsActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
