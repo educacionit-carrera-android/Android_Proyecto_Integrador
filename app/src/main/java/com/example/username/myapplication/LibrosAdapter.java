@@ -3,55 +3,64 @@ package com.example.username.myapplication;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class LibrosAdapter extends BaseAdapter {
+public class LibrosAdapter extends
+        RecyclerView.Adapter<LibrosAdapter.LibrosViewHolder> {
 
     private List<Libro> libros;
+    private OnItemClickListener onItemClickListener;
 
-    public LibrosAdapter(List<Libro> libros) {
+    public LibrosAdapter(List<Libro> libros, OnItemClickListener onItemClickListener) {
         this.libros = libros;
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    @NonNull
+    @Override
+    public LibrosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemLibro =
+                LayoutInflater
+                        .from(parent.getContext())
+                        .inflate(R.layout.item_libro, parent, false);
+        return new LibrosViewHolder(itemLibro);
     }
 
     @Override
-    public int getCount() {
+    public void onBindViewHolder(@NonNull LibrosViewHolder holder, final int position) {
+        holder.txtNombre.setText(libros.get(position).getNombre());
+        holder.txtAutor.setText(libros.get(position).getAutor());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.onItemClick(libros.get(position));
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
         return libros.size();
     }
 
-    @Override
-    public Libro getItem(int position) {
-        return libros.get(position);
-    }
+    class LibrosViewHolder extends RecyclerView.ViewHolder {
+        TextView txtNombre;
+        TextView txtAutor;
 
-    @Override
-    public long getItemId(int position) {
-        return libros.get(position).getId();
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //Asignamos al convertView a un objeto del tipo vista para ver si es nulo. Si no lo es,
-        //quiere decir que ya existía una vista, por lo que en vez de inflarla, la reutilizaremos.
-        View view = convertView;
-        if (view == null) {
-            view = LayoutInflater
-                    .from(parent.getContext())
-                    .inflate(R.layout.item_libro, parent, false);
+        LibrosViewHolder(@NonNull View itemView) {
+            super(itemView);
+            txtNombre = itemView.findViewById(R.id.txtNombre);
+            txtAutor = itemView.findViewById(R.id.txtAutor);
         }
-        //Obtenemos el libro a partir de la posición que nos viene
-        Libro libro = libros.get(position);
+    }
 
-        //Obtenemos los TextViews de nuestra vista (el layout item_libro)
-        TextView txtNombre = view.findViewById(R.id.txtNombre);
-        TextView txtAutor = view.findViewById(R.id.txtAutor);
-
-        txtNombre.setText(libro.getNombre());
-        txtAutor.setText(libro.getAutor());
-
-        return view;
+    interface OnItemClickListener {
+        void onItemClick(Libro libro);
     }
 
     public void setLibros(List<Libro> libros) {
