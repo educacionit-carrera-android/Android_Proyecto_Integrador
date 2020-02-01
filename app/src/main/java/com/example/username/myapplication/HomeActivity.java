@@ -5,13 +5,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +17,7 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private ListView lvLibros;
+    private RecyclerView rvLibros;
     private LibrosAdapter adapter;
     private Toolbar toolbar;
 
@@ -43,16 +41,14 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setupAdapter() {
-        lvLibros = findViewById(R.id.lvLibros);
-        adapter = new LibrosAdapter(getLibros());
-        lvLibros.setAdapter(adapter);
-        lvLibros.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        rvLibros = findViewById(R.id.rvLibros);
+        adapter = new LibrosAdapter(getLibros(), new LibrosAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Libro libro = adapter.getItem(position);
+            public void onItemClick(Libro libro) {
                 Toast.makeText(HomeActivity.this, libro.getNombre(), Toast.LENGTH_SHORT).show();
             }
         });
+        rvLibros.setAdapter(adapter);
     }
 
     @Override
