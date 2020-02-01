@@ -4,18 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private ListView lvLibros;
+    private RecyclerView rvLibros;
     private LibrosAdapter adapter;
     private Toolbar toolbar;
 
@@ -35,9 +35,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setupAdapter() {
-        lvLibros = findViewById(R.id.lvLibros);
+        rvLibros = findViewById(R.id.rvLibros);
         adapter = new LibrosAdapter(getLibros());
-        lvLibros.setAdapter(adapter);
+        rvLibros.setAdapter(adapter);
     }
 
     private List<Libro> getLibros() {
