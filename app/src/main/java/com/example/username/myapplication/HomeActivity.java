@@ -1,16 +1,17 @@
 package com.example.username.myapplication;
 
 import android.os.Bundle;
-import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 public class HomeActivity extends AppCompatActivity {
 
-    private ListView lvLibros;
+    private RecyclerView rvLibros;
     private LibrosAdapter adapter;
 
     @Override
@@ -22,9 +23,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setupAdapter() {
-        lvLibros = findViewById(R.id.lvLibros);
+        rvLibros = findViewById(R.id.rvLibros);
         adapter = new LibrosAdapter(getLibros());
-        lvLibros.setAdapter(adapter);
+        rvLibros.setAdapter(adapter);
     }
 
     private List<Libro> getLibros() {
