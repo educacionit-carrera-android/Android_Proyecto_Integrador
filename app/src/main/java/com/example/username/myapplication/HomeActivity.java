@@ -36,6 +36,7 @@ public class HomeActivity extends AppCompatActivity {
     private AirplaneStateReceiver airplaneStateReceiver = new AirplaneStateReceiver();
     private LibrosAdapter adapter;
     private Toolbar toolbar;
+    final static String LIBRO = "LIBRO";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +68,16 @@ public class HomeActivity extends AppCompatActivity {
         adapter = new LibrosAdapter(getLibros(), new LibrosAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Libro libro) {
-                Toast.makeText(HomeActivity.this, libro.getNombre(), Toast.LENGTH_SHORT).show();
+                goToDetalleLibro(libro);
             }
         });
         rvLibros.setAdapter(adapter);
+    }
+
+    private void goToDetalleLibro(Libro libro) {
+        Intent intent = new Intent(this, DetalleLibroActivity.class);
+        intent.putExtra(LIBRO, libro);
+        startActivity(intent);
     }
 
     private void initializeSyncService() {
