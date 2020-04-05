@@ -12,12 +12,15 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -36,6 +39,8 @@ public class HomeActivity extends AppCompatActivity {
     private AirplaneStateReceiver airplaneStateReceiver = new AirplaneStateReceiver();
     private LibrosAdapter adapter;
     private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
     final static String LIBRO = "LIBRO";
 
     @Override
@@ -44,6 +49,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         saludarUsuario();
         setupToolbar();
+        configurarNavigationView();
         setupAdapter();
 
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
@@ -61,6 +67,42 @@ public class HomeActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.homeToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Mis libros");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void configurarNavigationView() {
+        drawerLayout = findViewById(R.id.drawerLayout);
+        final ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+
+        navigationView = findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.menuAboutMe:
+                        irAAboutMe();
+                        break;
+                    case R.id.menuCerrarSesion:
+                        cerrarSesion();
+                        break;
+                }
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
+    }
+
+    private void irAAboutMe() {
+        Intent intent = new Intent(this, AboutMeActivity.class);
+        startActivity(intent);
+    }
+
+    private void cerrarSesion() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void setupAdapter() {
