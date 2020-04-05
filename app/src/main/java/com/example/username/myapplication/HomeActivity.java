@@ -7,8 +7,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -41,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private FloatingActionButton fabAgregarLibro;
     final static String LIBRO = "LIBRO";
 
     @Override
@@ -51,6 +53,7 @@ public class HomeActivity extends AppCompatActivity {
         setupToolbar();
         configurarNavigationView();
         setupAdapter();
+        setupUI();
 
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         prefs.getString("Nombre", "");
@@ -105,6 +108,21 @@ public class HomeActivity extends AppCompatActivity {
         finish();
     }
 
+    private void goToAgregarLibro() {
+        Intent intent = new Intent(HomeActivity.this, AgregarLibroActivity.class);
+        startActivity(intent);
+    }
+
+    private void setupUI() {
+        fabAgregarLibro = findViewById(R.id.fabAgregarLibro);
+        fabAgregarLibro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToAgregarLibro();
+            }
+        });
+    }
+
     private void setupAdapter() {
         rvLibros = findViewById(R.id.rvLibros);
         adapter = new LibrosAdapter(getLibros(), new LibrosAdapter.OnItemClickListener() {
@@ -151,21 +169,6 @@ public class HomeActivity extends AppCompatActivity {
             String usuario = bundle.getString("USUARIO");
             Toast.makeText(HomeActivity.this, "Bienvenido " + usuario, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.item_agregar) {
-            Intent intent = new Intent(HomeActivity.this, AgregarLibroActivity.class);
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
