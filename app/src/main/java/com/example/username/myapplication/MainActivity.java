@@ -5,15 +5,20 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String USUARIO = "USUARIO";
+    private LinearLayout container;
     private Button btnIniciarSesion;
+    private Button btnCrearUsuario;
     private TextView etUsuario;
     private TextView etPassword;
     private SharedPreferences pref;
@@ -27,6 +32,15 @@ public class MainActivity extends AppCompatActivity {
         etUsuario = findViewById(R.id.etUsuario);
         etPassword = findViewById(R.id.etContraseña);
         btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
+        btnCrearUsuario = findViewById(R.id.btnCrearUsuario);
+        container = findViewById(R.id.container);
+
+        btnCrearUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarInProgress();
+            }
+        });
 
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         cargarSharedPref();
+    }
+
+    private void mostrarInProgress() {
+        Snackbar.make(container, "En progreso", Snackbar.LENGTH_LONG).show();
     }
 
     private void guardarSharedPref(String usuario) {
