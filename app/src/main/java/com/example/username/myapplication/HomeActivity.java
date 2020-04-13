@@ -9,12 +9,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -128,17 +131,22 @@ public class HomeActivity extends AppCompatActivity {
         rvLibros = findViewById(R.id.rvLibros);
         adapter = new LibrosAdapter(getLibros(), new LibrosAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Libro libro) {
-                goToDetalleLibro(libro);
+            public void onItemClick(Libro libro, TextView txtNombre, TextView txtAutor) {
+                goToDetalleLibro(libro, txtNombre, txtAutor);
             }
         });
         rvLibros.setAdapter(adapter);
     }
 
-    private void goToDetalleLibro(Libro libro) {
+    private void goToDetalleLibro(Libro libro, TextView txtNombre, TextView txtAutor) {
         Intent intent = new Intent(this, DetalleLibroActivity.class);
         intent.putExtra(LIBRO, libro);
-        startActivity(intent);
+
+        Pair<View, String> p1 = Pair.create((View) txtNombre, getString(R.string.nombre_libro));
+        Pair<View, String> p2 = Pair.create((View) txtAutor, getString(R.string.nombre_autor));
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                p1, p2);
+        startActivity(intent, options.toBundle());
     }
 
     private void initializeSyncService() {

@@ -32,13 +32,13 @@ public class LibrosAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LibrosViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final LibrosViewHolder holder, final int position) {
         holder.txtNombre.setText(libros.get(position).getNombre());
         holder.txtAutor.setText(libros.get(position).getAutor());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListener.onItemClick(libros.get(position));
+                onItemClickListener.onItemClick(libros.get(position), holder.txtNombre, holder.txtAutor);
             }
         });
     }
@@ -60,7 +60,7 @@ public class LibrosAdapter extends
     }
 
     interface OnItemClickListener {
-        void onItemClick(Libro libro);
+        void onItemClick(Libro libro, TextView txtNombre, TextView txtAutor);
     }
 
     public void setLibros(List<Libro> libros) {
