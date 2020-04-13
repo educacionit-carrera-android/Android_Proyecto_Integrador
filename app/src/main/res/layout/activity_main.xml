@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -12,25 +13,42 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ingresar usuario" />
+        android:layout_marginTop="8dp"
+        android:text="Libros"
+        android:textSize="32sp" />
 
-    <EditText
-        android:id="@+id/etUsuario"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10" />
+        android:layout_marginTop="32dp"
+        android:hint="Usuario"
+        app:boxBackgroundMode="outline">
 
-    <TextView
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="Ingresar contraseña" />
+        android:hint="Contraseña"
+        app:boxBackgroundMode="outline">
 
-    <EditText
-        android:id="@+id/etContraseña"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etContraseña"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
