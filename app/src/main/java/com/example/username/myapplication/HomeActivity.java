@@ -100,6 +100,7 @@ public class HomeActivity extends AppCompatActivity {
     private void irAAboutMe() {
         Intent intent = new Intent(this, AboutMeActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     private void cerrarSesion() {
