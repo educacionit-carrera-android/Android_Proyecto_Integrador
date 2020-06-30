@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.perf.metrics.AddTrace;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -120,6 +121,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    @AddTrace(name = "HomeAdapterLibros")
     private void setupAdapter() {
         rvLibros = findViewById(R.id.rvLibros);
         adapter = new LibrosAdapter(getLibros(), new LibrosAdapter.OnItemClickListener() {
