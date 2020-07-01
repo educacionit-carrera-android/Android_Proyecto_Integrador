@@ -5,12 +5,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.username.myapplication.firebase.LoggingManager;
 import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnCrearUsuario;
     private TextView etUsuario;
     private TextView etPassword;
+    private CheckBox checkBoxRecordarDatos;
     private SharedPreferences pref;
 
     @Override
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
         btnCrearUsuario = findViewById(R.id.btnCrearUsuario);
         container = findViewById(R.id.container);
+        checkBoxRecordarDatos = findViewById(R.id.checkBoxRecordarDatos);
 
         btnCrearUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 if (usuario.isEmpty() || password.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Completar datos", Toast.LENGTH_SHORT).show();
                 } else {
+                    LoggingManager.logInicioSesion(checkBoxRecordarDatos.isChecked());
                     guardarSharedPref(usuario);
                     Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                     intent.putExtra("USUARIO", usuario);

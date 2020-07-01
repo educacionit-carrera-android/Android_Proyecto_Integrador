@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -21,6 +20,7 @@ import androidx.core.util.Pair;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.username.myapplication.firebase.LoggingManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.perf.metrics.AddTrace;
@@ -32,6 +32,7 @@ import java.util.List;
 
 import static android.app.PendingIntent.FLAG_NO_CREATE;
 import static android.content.Intent.ACTION_AIRPLANE_MODE_CHANGED;
+import static com.example.username.myapplication.firebase.LoggingManager.logAboutMeClicked;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -82,6 +83,7 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.menuAboutMe:
+                        logAboutMeClicked();
                         irAAboutMe();
                         break;
                     case R.id.menuCerrarSesion:
@@ -127,6 +129,7 @@ public class HomeActivity extends AppCompatActivity {
         adapter = new LibrosAdapter(getLibros(), new LibrosAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Libro libro, TextView txtNombre, TextView txtAutor) {
+                LoggingManager.logLibroClicked(libro.getNombre());
                 goToDetalleLibro(libro, txtNombre, txtAutor);
             }
         });
