@@ -21,6 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.username.myapplication.firebase.LoggingManager;
+import com.example.username.myapplication.firebase.RemoteConfigManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.perf.metrics.AddTrace;
@@ -97,9 +98,13 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void irAAboutMe() {
-        Intent intent = new Intent(this, AboutMeActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        if (RemoteConfigManager.isAboutMeEnabled()){
+            Intent intent = new Intent(this, AboutMeActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            Toast.makeText(this, "Sección no disponible.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void cerrarSesion() {
