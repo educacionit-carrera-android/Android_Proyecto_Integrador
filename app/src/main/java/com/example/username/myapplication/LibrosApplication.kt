@@ -1,6 +1,7 @@
 package com.example.username.myapplication
 
 import android.app.Application
+import com.google.android.gms.ads.MobileAds
 
 class LibrosApplication : Application() {
 
@@ -12,6 +13,7 @@ class LibrosApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        MobileAds.initialize(this)
     }
 
 }

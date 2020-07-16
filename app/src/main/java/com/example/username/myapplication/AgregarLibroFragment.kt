@@ -6,6 +6,7 @@ import android.content.Context.NOTIFICATION_SERVICE
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,9 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import java.sql.SQLException
 
 class AgregarLibroFragment : Fragment() {
@@ -22,10 +26,12 @@ class AgregarLibroFragment : Fragment() {
     private lateinit var etNombreLibro: EditText
     private lateinit var etAutor: EditText
     private lateinit var btnGuardar: Button
+    private lateinit var adViewBanner: AdView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_agregar_libro, container, false)
         setupUI(view)
+        initializeAdd()
         initializeBtnGuardar()
 
         return view
@@ -35,6 +41,38 @@ class AgregarLibroFragment : Fragment() {
         etNombreLibro = view.findViewById(R.id.etNombreLibro)
         etAutor = view.findViewById(R.id.etAutor)
         btnGuardar = view.findViewById(R.id.btnGuardar)
+        adViewBanner = view.findViewById(R.id.adViewBanner)
+    }
+
+    private fun initializeAdd() {
+        val request = AdRequest.Builder().build()
+        adViewBanner.loadAd(request)
+        adViewBanner.adListener = object : AdListener(){
+
+            override fun onAdLeftApplication() {
+                Log.d(TAG, "El usuario abandonó la app")
+            }
+
+            override fun onAdClicked() {
+                Log.d(TAG, "El anuncio fue presionado")
+            }
+
+            override fun onAdFailedToLoad(errorCode: Int) {
+                Log.d(TAG, "El anuncio falló al cargar")
+            }
+
+            override fun onAdClosed() {
+                Log.d(TAG, "El usuario retornó a la aplicación a partir del anuncio que ingresó")
+            }
+
+            override fun onAdLoaded() {
+                Log.d(TAG, "El anuncio fue cargado")
+            }
+
+            override fun onAdOpened() {
+                Log.d(TAG, "El anuncio fue abierto")
+            }
+        }
     }
 
     private fun initializeBtnGuardar() {
@@ -109,6 +147,10 @@ class AgregarLibroFragment : Fragment() {
                     NotificationManager.IMPORTANCE_DEFAULT)
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+    private companion object{
+        const val TAG = "AgregarLibroFragment"
     }
 
 }

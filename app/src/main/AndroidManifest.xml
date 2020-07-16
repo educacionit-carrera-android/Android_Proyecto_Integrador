@@ -53,6 +53,11 @@
         <receiver
             android:name=".SyncDataReceiver"
             android:exported="false" />
+
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="completar-con-application-id-admob"/>
     </application>
 
 </manifest>
