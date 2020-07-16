@@ -11,4 +11,5 @@
     <string name="close">Cerrar</string>
     <string name="nombre_autor">nombre_autor</string>
     <string name="nombre_libro">nombre_libro</string>
+    <string name="push_notif_channel_id">0</string>
 </resources>
