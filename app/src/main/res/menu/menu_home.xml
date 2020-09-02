@@ -8,4 +8,8 @@
         android:title="Agregar"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/item_mapa"
+        android:title="Mapa" />
+
 </menu>
