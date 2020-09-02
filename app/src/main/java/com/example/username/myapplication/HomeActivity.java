@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -169,6 +170,24 @@ public class HomeActivity extends AppCompatActivity {
             String usuario = bundle.getString("USUARIO");
             Toast.makeText(HomeActivity.this, "Bienvenido " + usuario, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if  (item.getItemId() == R.id.item_mapa) {
+            launchMaps();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void launchMaps() {
+        startActivity(new Intent(this, MapsActivity.class));
     }
 
     @Override
