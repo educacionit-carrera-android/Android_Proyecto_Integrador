@@ -104,8 +104,14 @@ public class HomeActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.item_agregar) {
             Intent intent = new Intent(HomeActivity.this, AgregarLibroActivity.class);
             startActivity(intent);
+        } else if (item.getItemId() == R.id.item_mapa) {
+            launchMaps();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void launchMaps() {
+        startActivity(new Intent(this, MapsActivity.class));
     }
 
     @Override
