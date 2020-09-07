@@ -32,7 +32,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         setContentView(R.layout.activity_maps)
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        callLocationPermission()
 
         val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map) as SupportMapFragment
@@ -50,6 +49,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         mMap.addMarker(crearMarcador(bibliotecaNacionalMarker, "Biblioteca Nacional Mariano Moreno"))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(capitalFederal, 12F))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(capitalFederal))
+
+        actualizarUbicacionActual()
+    }
+
+    @SuppressLint("NewApi")
+    private fun actualizarUbicacionActual() {
+        if (checkSelfPermission(locationPermission) == PackageManager.PERMISSION_GRANTED) {
+            mMap.isMyLocationEnabled = true
+            mMap.uiSettings.isMyLocationButtonEnabled = true
+        } else {
+            mMap.isMyLocationEnabled = false
+            mMap.uiSettings.isMyLocationButtonEnabled = false
+            callLocationPermission()
+        }
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
